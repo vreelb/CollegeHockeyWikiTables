@@ -139,13 +139,15 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 					break;
 			}
 		});
-
-		parse_CHS_for_player(stats, player);
+		if (player.prevteam[1] === "USHS") { // clarify USHS by state
+			player.prevteam[1] += "-" + getAbbr(player.hometown[1]);
+		}
+		//parse_CHS_for_player(stats, player);
 
 		submission_string += buildSubmissionLine(player);
 	});
 
-	submission_string += '\n{{end}}';
+	submission_string += '{{end}}';
 	$('#csv_textarea').val(submission_string.trim());
 }
 
@@ -195,15 +197,5 @@ function sanitizeHometown(place) {
 	var state = temp.pop().trim();
 	var city = temp.join().trim();
 
-	/*var state2 = state.replace(/\./g, "");
-
-	if (state2.length <= 2) {
-		state = state2.toUpperCase();
-	} else if (state2 == getAbbr(state2)) {
-		// keep state as-is, even with '.' at end
-	} else {
-		state = getAbbr(state2);
-	}*/
-
-	return [[city],[state]];
+	return [city, state];
 }
