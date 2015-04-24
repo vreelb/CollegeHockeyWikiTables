@@ -72,7 +72,7 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 
 	var num_players = 0;
 	var num_rows = 0;
-	var submission_string = '';
+	var submission_string = '{{College ice hockey team roster}}\n';
 	var temp1 = '';
 	var temp2 = '';
 
@@ -100,16 +100,19 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 					player.last_name = temp2.join(" ").trim();
 					break;
 				case 2: // parse year
-					temp1 = $(this).text();
-					temp2 = temp1.charAt(1).toLowerCase(); 
-					player.year = temp1.charAt(0) + temp2;
+					switch ($(this).text()){
+						case "FR|": player.year = "freshman";	break;
+						case "SO|": player.year = "sophomore";	break;
+						case "JR|": player.year = "junior";		break;
+						case "SR|": player.year = "senior";		break;
+					}
 					break;
 				case 3: // parse position
 					player.position = $(this).text().trim();
 					if (player.position == "G") { player.stype = "hg"; }
 					break;
 				case 4: // parse height
-					player.height = $(this).text().trim();
+					player.height = $(this).text().trim().split('-');
 					break;
 				case 5: // parse weight (M)
 					if (num_rows == 9) {
@@ -123,11 +126,17 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 					break;
 				case 7: // parse age (M), hometown + etc. (W)
 					if (num_rows == 8) {
-						player.hometown = sanitizeHometown($(this).text().trim().split(' / ')[0]);
+						temp1 = $(this).text().trim().split(' / ');
+						player.hometown = sanitizeHometown(temp1[0]);
+						player.prevteam = temp1[1].split(' (');
+						player.prevteam[1] = player.prevteam[1].slice(0,-1);
 					}
 					break;
 				case 8: // parse hometown and prev team (M)
-					player.hometown = sanitizeHometown($(this).text().trim().split(' / ')[0]);
+					temp1 = $(this).text().trim().split(' / ');
+					player.hometown = sanitizeHometown(temp1[0]);
+					player.prevteam = temp1[1].split(' (');
+					player.prevteam[1] = player.prevteam[1].slice(0,-1);
 					break;
 			}
 		});
@@ -141,25 +150,36 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 }
 
 function buildSubmissionLine(player) {
-	var str = '';
-
-	if (player.number) { str += player.number + '|'; } else { str += '|'; }
-
-	str += player.first_name + '|' + player.last_name + '|';
+	// {{CIHplayer |num= |first= |last= |link= |class= |rs= |pos= |ft= |in= |wt= |birthyear= |birthmonth= |birthday= |state= |hometown= |prevteam= |prevleague= |NHLteam= |NHLpick= |NHLyear= |inj= |cap=}}
 	
-	if (player.position) { str += player.position + '|'; } else { str += '|'; }
-	if (player.height) { str += player.height + '|'; } else { str += '|'; }
-	if (player.weight) { str += player.weight + '|'; } else { str += '|'; }
-	if (player.year) { str += player.year + '|'; } else { str += '|'; }
-	if (player.hometown) { str += player.hometown + '|'; } else { str += '|'; }
-	if (player.stype) { str += player.stype + '|'; } else { str += '|'; }
+	var str = '{{CIHplayer';
 
-	for (var z = 1; z<=6; z++) {
-		if (player['s'+z]) { str += player['s'+z]; }
-		str += '|';
-	}
+	if (player.number) { str += ' |num='+player.number; } else { str += ' |num= '; }
+	str += ' |first=' + player.first_name + ' |last=' + player.last_name;
+	str += ' |link= ';	// can be filled in manually if they have a wikipedia page
+	if (player.year) { str += ' |class=' + player.year; } else { str += ' |class= '; }
+	str += ' |rs= ';	// can be filled in manually if are redshirted
+	if (player.position) { str += ' |pos=' + player.position; } else { str += ' |pos= '; }
+	if (player.height) { str += ' |ft=' + player.height[0] + ' |in=' + player.height[1]; } else { str += ' |ft=  |in= '; }
+	if (player.weight) { str += ' |wt=' + player.weight; } else { str += ' |wt= '; }
+	
+	str += ' |birthyear=  |birthmonth=  |birthday= '; // deal with this later
+	
+	if (player.hometown) { str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]'; } else { str += ' |state=  |hometown= '; }
+	
+	// These (prevteam, prevleague) might be tricky:
+	// player's previous team, compactly wikilinked (if page exists) without nickname or full school name
+	// (e.g. "[[Brainerd High School (Minnesota)|Brainerd]]", "[[Nanaimo Clippers|Nanaimo]]",
+	// "[[Northern Michigan Wildcats men's ice hockey|Northern Michigan]]", "Linköpings J-20")
+	
+	// league (acronym) of player's previous team, not wikilinked (e.g. "USHL", "BCHL", "CCHA", "J20 SuperElit").
+	// Note that "AtlJHL" must be used for the Atlantic Junior Hockey League.
+	// For US high schools, use e.g. "USHS-MN". For minor teams, use e.g. "Midget AAA".
+	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; } else { str += ' |prevteam=  |prevleague= '; }
 
-	if (player.draft_pick) { str += player.draft_pick; }
+	str += ' |NHLteam=  |NHLpick=  |NHLyear=  |inj=  |cap= }}'; // deal with this later
+	
+	//if (player.draft_pick) { str += player.draft_pick; }
 
 	return str + '\n';
 }
@@ -173,7 +193,7 @@ function sanitizeHometown(place) {
 	var state = temp.pop().trim();
 	var city = temp.join().trim();
 
-	var state2 = state.replace(/\./g, "");
+	/*var state2 = state.replace(/\./g, "");
 
 	if (state2.length <= 2) {
 		state = state2.toUpperCase();
@@ -181,123 +201,7 @@ function sanitizeHometown(place) {
 		// keep state as-is, even with '.' at end
 	} else {
 		state = getAbbr(state2);
-	}
+	}*/
 
-	return city + ", " + state;
-}
-
-function parseRosterSIDEARM(table_HTML, rowsToSkip) {
-	if (rowsToSkip === undefined) {
-		rowsToSkip = 1; // assume 1 header row
-	}
-
-	// Sanitize nbsp weirdness
-	table_HTML = table_HTML.replace(/\&nbsp\;/g, '' );
-
-	$('#rosterSIDEARM').html(table_HTML);
-	$('#rosterSIDEARM table').css('font-size', '8pt');
-	$('#boxSIDEARM').hide();
-
-	c = discoverColumnsSIDEARM();
-
-	var num_players = 0;
-	var num_rows = 0;
-	var submission_string = '';
-	var temp1 = '';
-	var temp2 = '';
-
-	$('#rosterSIDEARM tr').slice(rowsToSkip).each(function() {
-		var player = new Object();
-		num_players++;
-		num_rows = $(this).find('td').length;
-
-		$(this).find('td').each(function(index) {
-			switch (index) {
-				case c.number: // parse number
-					player.number = $(this).text().trim().replace(/\#/g, '');
-					break;
-				case c.name: // parse FIRST and LAST name
-					temp1 = $(this).text().trim().replace("\'", "\\\'");
-
-					temp2 = temp1.split(' ');
-					player.first_name = temp2.shift();  // get FIRST name (assume 1 first name)
-					player.last_name = temp2.join(" ").trim();
-					break;
-				case c.year: // parse year
-					temp1 = $(this).text().trim().toLowerCase();
-					if (temp1.indexOf("fr")>=0) {
-						temp2 = "Fr";
-					} else if (temp1.indexOf("so")>=0) {
-						temp2 = "So";
-					} else if (temp1.indexOf("jr")>=0) {
-						temp2 = "Jr";
-					} else if (temp1.indexOf("sr")>=0) {
-						temp2 = "Sr";
-					} else {
-						temp2 = $(this).text().trim();
-					}
-					player.year = temp2;
-					break;
-				case c.position: // parse position
-					player.position = $(this).text().trim();
-					break;
-				case c.height: // parse height
-					player.height = $(this).text().trim();
-					break;
-				case c.weight: // parse weight
-					player.weight = $(this).text().trim();
-					break;
-				case c.hometown: // parse hometown isolated
-					player.hometown = sanitizeHometown($(this).text().trim());
-					break;
-				case c.hometown_combined: // parse hometown from combined
-					player.hometown = sanitizeHometown($(this).text().trim().split(' / ')[0]);
-					break;
-			}
-		});
-
-		submission_string += buildSubmissionLine(player);
-	});
-
-	$('#csv_textarea').val(submission_string.trim());
-}
-
-function discoverColumnsSIDEARM() { // Find column order from SIDEARM HTML
-	var cols = new Object();
-	var index = 0;
-
-	$("#other_page .default_dgrd_header th").each(function() {
-		if ($(this).hasClass('roster_dgrd_header_no')) {
-			cols.number = index;
-		} else if ($(this).hasClass('roster_dgrd_header_full_name')) {
-			cols.name = index;
-		} else if ($(this).hasClass('roster_dgrd_header_rp_position_short')) {
-			cols.position = index;
-		} else if ($(this).hasClass('roster_dgrd_header_rp_position_long')) {
-			cols.position = index;
-		} else if ($(this).hasClass('roster_dgrd_header_height')) {
-			cols.height = index;
-		} else if ($(this).hasClass('roster_dgrd_header_rp_weight')) {
-			cols.weight = index;
-		} else if ($(this).hasClass('roster_dgrd_header_academic_year')) {
-			cols.year = index;
-		} else if ($(this).hasClass('roster_dgrd_header_player_hometown')) {
-			cols.hometown = index;
-		} else if ($(this).hasClass('roster_dgrd_player_hometown')) {
-			cols.hometown = index;
-		} else if ($(this).hasClass('roster_dgrd_header_highschool')) {
-			cols.highschool = index;
-		} else if ($(this).hasClass('roster_dgrd_header_hometownhighschool')) {
-			cols.hometown_combined = index;
-		} else if ($(this).hasClass('roster_dgrd_header_rp_captain')) {
-			cols.captain = index;
-		} else if ($(this).hasClass('roster_dgrd_header_player_major')) {
-			cols.major = index;
-		} else if ($(this).hasClass('roster_dgrd_header_player_previous_school')) {
-			cols.prev_school = index;
-		}
-		index++;
-	});
-
-	return cols;
+	return [[city],[state]];
 }

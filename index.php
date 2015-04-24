@@ -52,7 +52,7 @@ if (@$_GET['pull_url']) {
 		var content_html = "<?= $contents ?>";
 		$("#other_page").html(content_html);
 		$("#other_page").html("<table>"+$("#other_page .rostable").first().html()+"</table>");
-		$("#parseTableHTML").hide()  // hide unneeded things
+		//$("#parseTableHTML").hide();  // hide unneeded things
 		parse_table_HTML($('#other_page').html(), content_stat);
 	});
 	</script>
