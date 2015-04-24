@@ -100,7 +100,7 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 					player.last_name = temp2.join(" ").trim();
 					break;
 				case 2: // parse year
-					switch ($(this).text()){
+					switch ($(this).text()) {
 						case "FR|": player.year = "freshman";	break;
 						case "SO|": player.year = "sophomore";	break;
 						case "JR|": player.year = "junior";		break;
@@ -128,8 +128,7 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 					if (num_rows == 8) {
 						temp1 = $(this).text().trim().split(' / ');
 						player.hometown = sanitizeHometown(temp1[0]);
-						player.prevteam = temp1[1].split(' (');
-						player.prevteam[1] = player.prevteam[1].slice(0,-1);
+						player.prevteam = temp1[1].trim();
 					}
 					break;
 				case 8: // parse hometown and prev team (M)
@@ -146,6 +145,7 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 		submission_string += buildSubmissionLine(player);
 	});
 
+	submission_string += '\n{{end}}';
 	$('#csv_textarea').val(submission_string.trim());
 }
 
@@ -180,6 +180,8 @@ function buildSubmissionLine(player) {
 	str += ' |NHLteam=  |NHLpick=  |NHLyear=  |inj=  |cap= }}'; // deal with this later
 	
 	//if (player.draft_pick) { str += player.draft_pick; }
+	
+	// look into adding '| women =' for women's teams
 
 	return str + '\n';
 }
