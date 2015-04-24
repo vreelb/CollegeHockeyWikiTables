@@ -71,15 +71,21 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 	$('#showTableEntry').show();
 
 	var num_players = 0;
-	var num_rows = 0;
-	var submission_string = '{{College ice hockey team roster}}\n';
+	var num_rows = $('#rosterTable tr').slice(rowsToSkip).first().find('td').length;
+	
+	var submission_string = '{{College ice hockey team roster';
+	if (num_rows === 8) {
+		submission_string += ' |women=yes}}\n';
+	} else {
+		submission_string += '}}';
+	}
+	
 	var temp1 = '';
 	var temp2 = '';
 
 	$('#rosterTable tr').slice(rowsToSkip).each(function() {
 		var player = new Object();
 		num_players++;
-		num_rows = $(this).find('td').length;
 
 		$(this).find('td').each(function(index) {
 			switch (index) {
@@ -145,6 +151,11 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 		//parse_CHS_for_player(stats, player);
 
 		submission_string += buildSubmissionLine(player);
+		if (num_rows === 8) {
+			submission_string += ' |women=yes }}\n';
+		} else {
+			submission_string += '}}';
+		}
 	});
 
 	submission_string += '{{end}}';
@@ -179,7 +190,7 @@ function buildSubmissionLine(player) {
 	// For US high schools, use e.g. "USHS-MN". For minor teams, use e.g. "Midget AAA".
 	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; } else { str += ' |prevteam=  |prevleague= '; }
 
-	str += ' |NHLteam=  |NHLpick=  |NHLyear=  |inj=  |cap= }}'; // deal with this later
+	str += ' |NHLteam=  |NHLpick=  |NHLyear=  |inj=  |cap= '; // deal with this later
 	
 	//if (player.draft_pick) { str += player.draft_pick; }
 	
