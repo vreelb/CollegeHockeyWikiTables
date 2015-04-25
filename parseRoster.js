@@ -145,7 +145,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 					temp1 = $(this).text().trim().split(' / ');
 					player.hometown = sanitizeHometown(temp1[0]);
 					player.prevteam = temp1[1].split(' (');
-					player.prevteam[1] = player.prevteam[1].slice(0,-1);
+					player.prevteam[1] = player.prevteam[1].split(')')[0];
 					break;
 			}
 		});
@@ -158,7 +158,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 		if (num_rows === 8) {
 			submission_string += ' |women=yes }}\n';
 		} else {
-			submission_string += '}}';
+			submission_string += '}}\n';
 		}
 	});
 
@@ -171,7 +171,7 @@ function buildSubmissionLine(player) {
 	
 	var str = '{{CIHplayer';
 
-	if (player.number) { str += ' |num='+player.number; } else { str += ' |num= '; }
+	if (player.number) { str += ' |num=' + player.number; } else { str += ' |num= '; }
 	str += ' |first=' + player.first_name + ' |last=' + player.last_name;
 	str += ' |link= ';	// can be filled in manually if they have a wikipedia page
 	if (player.year) { str += ' |class=' + player.year; } else { str += ' |class= '; }
@@ -197,10 +197,8 @@ function buildSubmissionLine(player) {
 	str += ' |NHLteam=  |NHLpick=  |NHLyear=  |inj=  |cap= '; // deal with this later
 	
 	//if (player.draft_pick) { str += player.draft_pick; }
-	
-	// look into adding '| women =' for women's teams
 
-	return str + '\n';
+	return str;
 }
 
 function sanitizeHometown(place) {
