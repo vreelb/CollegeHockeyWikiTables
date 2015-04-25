@@ -136,7 +136,9 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 					if (num_rows == 8) {
 						temp1 = $(this).text().trim().split(' / ');
 						player.hometown = sanitizeHometown(temp1[0]);
-						player.prevteam = temp1[1].trim();
+						player.prevteam = [];
+						player.prevteam[0] = temp1[1].trim();
+						player.prevteam[1] = ' ';
 					}
 					break;
 				case 8: // parse hometown and prev team (M)
