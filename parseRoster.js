@@ -57,7 +57,7 @@ function parse_CHS_for_player(stats, p) {
 }
 
 // Pass in the table HTML, and the number of initial rows not containing data
-function parse_table_HTML(table_HTML, stats, rowsToSkip) {
+function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 	if (rowsToSkip === undefined) {
 		rowsToSkip = 1; // assume 1 header row
 	}
@@ -73,7 +73,9 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 	var num_players = 0;
 	var num_rows = $('#rosterTable tr').slice(rowsToSkip).first().find('td').length;
 	
-	var submission_string = '{{College ice hockey team roster';
+	var d = new Date();
+	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	var submission_string = '{{refbegin}}\nAs of '+ monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + '. [' + url + ']\n{{refend}}\n{{College ice hockey team roster';
 	if (num_rows === 8) {
 		submission_string += ' |women=yes}}\n';
 	} else {
@@ -150,7 +152,7 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 		}
 		//parse_CHS_for_player(stats, player);
 
-		submission_string += buildSubmissionLine(player);
+		submission_string += buildSubmissionLine(player).replace(/\\/g, '');
 		if (num_rows === 8) {
 			submission_string += ' |women=yes }}\n';
 		} else {
@@ -163,7 +165,7 @@ function parse_table_HTML(table_HTML, stats, rowsToSkip) {
 }
 
 function buildSubmissionLine(player) {
-	// {{CIHplayer |num= |first= |last= |link= |class= |rs= |pos= |ft= |in= |wt= |birthyear= |birthmonth= |birthday= |state= |hometown= |prevteam= |prevleague= |NHLteam= |NHLpick= |NHLyear= |inj= |cap=}}
+	// {{CIHplayer |num= |first= |last= |link= |class= |rs= |pos= |ft= |in= |wt= |birthyear= |birthmonth= |birthday= |state= |hometown= |prevteam= |prevleague= |NHLteam= |NHLpick= |NHLyear= |inj= |cap= |women=}}
 	
 	var str = '{{CIHplayer';
 

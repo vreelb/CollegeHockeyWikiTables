@@ -15,13 +15,14 @@ $chs_prefix = @$_GET["pull_url"];
 
 //////////////////// CHS Pulling
 if (@$_GET['pull_url']) {
-	if (date('n')>8) {
+	if (date('n')>8) {	// guess which season baesd on current month
 		$season = date('y') . (date('y')+1);
 	} else {
 		$season = (date('y')-1) . date('y');
 	}
 
-	$chs = fopen("http://www.collegehockeystats.net/". $season ."/rosters/" . $chs_prefix, "r");
+	$chs_url = "http://www.collegehockeystats.net/". $season ."/rosters/" . $chs_prefix;
+	$chs = fopen($chs_url, "r");
 	$contents = stream_get_contents($chs);
 	$contents = mb_convert_encoding($contents, 'UTF-8', 'ASCII');
 	$contents = str_replace("\xc2\x9a", "\xc5\xa1" , $contents); // replace incorrect "Single Character Introducer" with "Small Latin S with Caron"
@@ -53,7 +54,7 @@ if (@$_GET['pull_url']) {
 		$("#other_page").html(content_html);
 		$("#other_page").html("<table>"+$("#other_page .rostable").first().html()+"</table>");
 		//$("#parseTableHTML").hide();  // hide unneeded things
-		parse_table_HTML($('#other_page').html(), content_stat);
+		parse_table_HTML($('#other_page').html(), content_stat, "<?= $chs_url ?>");
 	});
 	</script>
 
