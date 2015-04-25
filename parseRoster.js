@@ -167,7 +167,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 }
 
 function buildSubmissionLine(player) {
-	// {{CIHplayer |num= |first= |last= |link= |class= |rs= |pos= |ft= |in= |wt= |birthyear= |birthmonth= |birthday= |state= |hometown= |prevteam= |prevleague= |NHLteam= |NHLpick= |NHLyear= |inj= |cap= |women=}}
+	// {{CIHplayer |num= |first= |last= |link= |class= |rs= |pos= |ft= |in= |wt= |birthyear= |birthmonth= |birthday= |state= |hometown= |prevteam= |prevleague= |NHLteam= |NHLround= |NHLpick= |NHLyear= |inj= |cap= |women=}}
 	
 	var str = '{{CIHplayer';
 
@@ -194,7 +194,7 @@ function buildSubmissionLine(player) {
 	// For US high schools, use e.g. "USHS-MN". For minor teams, use e.g. "Midget AAA".
 	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; } else { str += ' |prevteam=  |prevleague= '; }
 
-	str += ' |NHLteam=  |NHLpick=  |NHLyear=  |inj=  |cap= '; // deal with this later
+	str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear=  |inj=  |cap= '; // deal with this later
 	
 	//if (player.draft_pick) { str += player.draft_pick; }
 
