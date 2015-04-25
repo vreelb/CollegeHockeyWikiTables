@@ -11,7 +11,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 <?php
 ini_set("auto_detect_line_endings", true);
-$chs_prefix = @$_GET["pull_url"];
+$chs_prefix = @$_GET["pull_url"] ?: '';
 
 //////////////////// CHS Pulling
 if (@$_GET['pull_url']) {
@@ -64,7 +64,7 @@ if (@$_GET['pull_url']) {
 
 <form id="CHSabbr" action="index.php">
 	<label>Enter CollegeHockeyStats abbreviation: 
-		<input type="text" name="pull_url" size="10" maxlength="4" />
+		<input type="text" name="pull_url" size="10" maxlength="4" value="<?= $chs_prefix ?>"/>
 		<input type="submit" name="pull" onclick=""></button>
 	</label>
 </form>
