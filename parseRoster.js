@@ -86,18 +86,12 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 
 					if (temp2[temp2.length-1].indexOf('(') >= 0) {  // get (DRAFT) out
 						temp1 = temp2.pop();
-						//player.draft_pick = temp1.substr(1,3);
 					}
 					
 					player.last_name = temp2.join(" ").trim();
 					break;
 				case 2: // parse year
-					switch ($(this).text()) {
-						case "FR|": player.year = "freshman";	break;
-						case "SO|": player.year = "sophomore";	break;
-						case "JR|": player.year = "junior";		break;
-						case "SR|": player.year = "senior";		break;
-					}
+					player.year = $(this).text().slice(0, 2).toLowerCase();
 					break;
 				case 3: // parse position
 					player.position = $(this).text().trim();

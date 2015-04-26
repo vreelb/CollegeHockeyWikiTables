@@ -103,58 +103,60 @@ var StateAbbreviations =
 
 var NHLAbbreviations = 
 {
-// Common Mappings
-	"ANA": "Anaheim",				// Anaheim		Anaheim Ducks|ANA
-	"ARZ": "Arizona",				// Arizona		Arizona Coyotes|ARZ
-	"BOS": "Boston",				// Boston		Boston Bruins|BOS
-	"BUF": "Buffalo",				// Buffalo		Buffalo Sabres|BUF
-	"CGY": "Calgary",				// Calgary		Calgary Flames|CGY
-	"CAR": "Carolina",				// Carolina		Carolina Hurricanes|CAR
-	"CHI": "Chicago",				// Chicago		Chicago Blackhawks|CHI
-	"COL": "Colorado",				// Colorado		Colorado Avalanche|COL
-	"CBJ": "Columbus",				// Columbus		Columbus Blue Jackets|CBJ
-	"DAL": "Dallas",				// Dallas		Dallas Stars|DAL
-	"DET": "Detroit",				// Detroit		Detroit Red Wings|DET
-	"EDM": "Edmonton",				// Edmonton		Edmonton Oilers|EDM
-	"FLA": "Florida",				// Florida		Florida Panthers|FLA
-	"LAK": "Los Angeles",			// Los Angeles		Los Angeles Kings|LOS
-	"MIN": "Minnesota",				// Minnesota		Minnesota Wild|MIN
-	"MON": "Montreal",				// Montreal		Montreal Canadiens|MON
-	"NSH": "Nashville",				// Nashville		Nashville Predators|NSH
-	"NJD": "New Jersey",			// New Jersey		New Jersey Devils|NJD
-	"NYI": "New York Islanders",	// New York Islanders		New York Islanders|NYI
-	"NYR": "New York Rangers",		// New York Rangers		New York Rangers|NYR
-	"PHI": "Philadelphia",			// Philadelphia		Philadelphia Flyers|PHI
-	"PHO": "Phoenix",				// Phoenix		Phoenix Coyotes|PHO
-	"PIT": "Pittsburgh",			// Pittsburgh		Pittsburgh Penguins|PIT
-	"OTT": "Ottawa",				// Ottawa		Ottawa Senators|OTT
-	"STL": "St. Louis",				// St. Louis		St. Louis Blues|STL
-	"SJS": "San Jose",				// San Jose		San Jose Sharks|SJS
-	"TAM": "Tampa Bay",				// Tampa Bay		Tampa Bay Lightning|TAM
-	"TOR": "Toronto",				// Toronto		Toronto Maple Leafs|TOR
-	"VAN": "Vancouver",				// Vancouver		Vancouver Canucks|VAN
-	"WSH": "Washington",			// Washington		Washington Capitals|WAS
-	"WPG": "Winnipeg",				// Winnipeg		Winnipeg Jets|WPG
-// Inconsistant Mappings
+// Offical abbreviations per NHL Rulebook 2014-2015
+	"ANA": "Anaheim",				// Anaheim Ducks
+	"ARI": "Arizona",				// Arizona Coyotes
+	"BOS": "Boston",				// Boston Bruins
+	"BUF": "Buffalo",				// Buffalo Sabres
+	"CGY": "Calgary",				// Calgary Flames
+	"CAR": "Carolina",				// Carolina Hurricanes
+	"CHI": "Chicago",				// Chicago Blackhawks
+	"COL": "Colorado",				// Colorado Avalanche
+	"CBJ": "Columbus",				// Columbus Blue Jackets
+	"DAL": "Dallas",				// Dallas Stars
+	"DET": "Detroit",				// Detroit Red Wings
+	"EDM": "Edmonton",				// Edmonton Oilers
+	"FLA": "Florida",				// Florida Panthers
+	"LAK": "Los Angeles",			// Los Angeles Kings
+	"MIN": "Minnesota",				// Minnesota Wild
+	"MTL": "Montreal",				// Montreal Canadiens
+	"NSH": "Nashville",				// Nashville Predators
+	"NJD": "New Jersey",			// New Jersey Devils
+	"NYI": "New York Islanders",	// New York Islanders
+	"NYR": "New York Rangers",		// New York Rangers
+	"PHI": "Philadelphia",			// Philadelphia Flyers
+	"ARI": "Phoenix",				// Phoenix Coyotes
+	"PIT": "Pittsburgh",			// Pittsburgh Penguins
+	"OTT": "Ottawa",				// Ottawa Senators
+	"STL": "St. Louis",				// St. Louis Blues
+	"SJS": "San Jose",				// San Jose Sharks
+	"TBL": "Tampa Bay",				// Tampa Bay Lightning
+	"TOR": "Toronto",				// Toronto Maple Leafs
+	"VAN": "Vancouver",				// Vancouver Canucks
+	"WSH": "Washington",			// Washington Capitals
+	"WPG": "Winnipeg",				// Winnipeg Jets
+// Alternate abbreviations
+	"ARZ": "Arizona",
 	"LOS": "Los Angeles",
-	"MTL": "Montreal",
+	"MON": "Montreal",
 	"PHL": "Philadelphia",
+	"PHO": "Phoenix",
 	"PHX": "Phoenix",
-	"TBL": "Tampa Bay",
+	"TAM": "Tampa Bay",
 	"WAS": "Washington",
 	"WIN": "Winnipeg",
-// Old Mappings
-	// "": "Atlanta",					// Atlanta Thrashers		Atlanta Thrashers|ATL
-	// "": "Atlanta Flames",			// Atlanta Flames		Atlanta Flames|ATL
-	// "": "California",				// California		California Golden Seals|CLF
-	// "": "Cleveland",				// Cleveland		Cleveland Barons|CLE
-	// "": "Colorado Rockies",		// Colorado Rockies		Colorado Rockies (NHL)|COR
-	// "": "Hartford",				// Hartford		Hartford Whalers|HTF
-	// "": "Kansas City",				// Kansas City		Kansas City Scouts|KCS
-	// "": "Minnesota North Stars",	// Minnesota North Stars		Minnesota North Stars|MNS
-	// "": "Oakland",					// Oakland		Oakland Seals|OAK
-	// "": "Quebec",					// Quebec		Quebec Nordiques|QUE
-	// "": "Winnipeg Jets",			// Winnipeg		Winnipeg Jets (1972–96)|WIN
+// Old Team abbreviations
+	// "": "Atlanta",					// Atlanta Thrashers|ATL
+	// "": "Atlanta Flames",			// Atlanta Flames|ATL
+	// "": "California",				// California Golden Seals|CLF
+	// "": "Cleveland",					// Cleveland Barons|CLE
+	// "": "Colorado Rockies",			// Colorado Rockies (NHL)|COR
+	// "": "Hartford",					// Hartford Whalers|HTF
+	// "": "Kansas City",				// Kansas City Scouts|KCS
+	// "": "Minnesota North Stars",		// Minnesota North Stars|MNS
+	// "": "Oakland",					// Oakland Seals|OAK
+	// "": "Quebec",					// Quebec Nordiques|QUE
+	// "": "Winnipeg Jets",				// Winnipeg Jets (1972–96)|WIN
 };
 
 function getStateAbbr(full_name) {
