@@ -50,17 +50,6 @@ if (@$_GET['pull_url']) {
 		
 		$contents_chn = substr(trim($contents_chn), 0, (strrpos($contents_chn, '<h3 style=\"margin-bottom: 2px\">Recruits')));
 	}
-/*
-	$chs_stats = fopen("http://www.collegehockeystats.net/". $season ."/textstats/" . $chs_prefix, "r");
-	$contents_stats = stream_get_contents($chs_stats);
-	//$contents_stats = mb_convert_encoding($contents_stats, 'UTF-8', 'ASCII'); // not currently needed for textstats
-	$contents_stats = addslashes($contents_stats);
-	$contents_stats = str_replace(chr(10), '~', $contents_stats);  // fix newline issues, delimit with '~'
-	$contents_stats = str_replace(chr(13), '', $contents_stats);
-	$contents_stats = stristr($contents_stats, '<PRE CLASS=\"tiny\">'); // get only stats data from page
-	$contents_stats = substr(trim($contents_stats), 20, (strrpos($contents_stats, "</PRE>")-21));
-	$contents_stats = explode('~', $contents_stats);
-*/
 ?> 
 
 	<div id="other_page" style="display:none;"></div>
@@ -81,12 +70,11 @@ if (@$_GET['pull_url']) {
 <?php
 		}
 ?>
-		//$("#parseTableHTML").hide();  // hide unneeded things
+		$("#parseTableHTML").hide();  // hide unneeded things
 		parse_table_HTML($('#other_page').html(), $('#other_other_page').html(), "<?= $chs_url ?>");
 		
 	});
 	</script>
-
 <?php
 }
 ?>
@@ -97,14 +85,11 @@ if (@$_GET['pull_url']) {
 		<input type="submit" name="pull" onclick=""></button>
 	</label>
 </form>
-<!--<button id="CHSbutton" onclick="parse_table_HTML($('#other_page').html());">Parse CHS</button>-->
 
 <div id="rosterTable" style="visibility: auto;"></div>
-<!--<div id="CHNrosterTable" style="visibility: auto;"></div>-->
 
 <br/>
 <form>
-	<!--<label>Team Name: <input id="team_box" type="text" name="team_sel" size="10" /></label>-->
 	<textarea id="csv_textarea" name="csv" rows="30" cols="100"></textarea>
 </form>
 

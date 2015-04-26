@@ -1,61 +1,3 @@
-// Pass in CHS Stat Table and player object
-function parse_CHS_for_player(stats, p) {  
-	// skaters
-	var i = 4;
-	for (i; i<stats.length; i++) {
-		// find the current player (hacky)
-		if (parseInt(stats[i][0]+stats[i][1]) == p.number) {
-
-			if (!p.stype) { p.stype = 'ho'; } else { continue; }
-
-			var pstats = stats[i].split(" | ")[1];
-			pstats = pstats.replace(/  +/g, ' ').split(' ');
-
-			p.s1 = pstats[0];
-			p.s2 = pstats[1];
-			p.s3 = pstats[2];
-			p.s4 = pstats[3];
-			if (pstats.length == 10) { // penalty minutes
-				p.s5 = pstats[5];
-			} else {
-				p.s5 = 0;
-			}
-			p.s6 = '';
-
-			break;
-		}
-		if (stats[i][0]=="-") { break; }
-	}
-
-	if (p.stype == 'ho') { return; }
-
-	// goalies
-	var j = i + 5;
-	for (j;j<i+11;j++) {
-		if (!$.isNumeric((stats[j][0])+stats[j][1])){ break; }
-
-		if (parseInt(stats[j][0]+stats[j][1]) == p.number) {
-			var pstats = stats[j].split(" | ")[1];
-			pstats = pstats.trim().replace(/  +/g, ' ').split(' ');
-
-			p.s1 = pstats[0];
-
-			// record
-			var record = pstats[7]+pstats[8]+pstats[9];
-			if (record.length > 8) {
-				record = record.slice(0,record.indexOf(pstats[pstats.length-4][0]));
-			}
-			record = record.split('-');
-			p.s2 = record[0];
-			p.s3 = record[1];
-			p.s4 = record[2];
-
-			p.s5 = pstats[5];
-			p.s6 = pstats[6];
-		}
-	}
-}
-
 // Pass in CHN Stat Table and player object
 function parse_CHN(stats, players) {
 	$('#other_other_page .stats-row0, #other_other_page .stats-row1').each(function() {
@@ -66,6 +8,11 @@ function parse_CHN(stats, players) {
 			}
 			if ($(this).children('td:nth-child(6)').text() != '') {
 				players[player_num].birthday = $(this).children('td:nth-child(6)').text().split('/');
+				if (players[player_num].birthday[2] > 50) {
+					players[player_num].birthday[2] = '19' + players[player_num].birthday[2];
+				} else {
+					players[player_num].birthday[2] = '20' + players[player_num].birthday[2];
+				}
 			}
 			if ($(this).children('td:nth-child(9)').text() != '') {
 				players[player_num].draft = $(this).children('td:nth-child(9)').text().split('-');
@@ -175,14 +122,18 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 		if (num_rows === 8) {
 			player.female = true;
 		}
-		submission_string += buildSubmissionLine(player).replace(/\\/g, '');
 		
 		players[player.number] = player;
 	});
-
+	
 	if (num_rows != 8) {
 		parse_CHN(stats, players);
 	}
+	
+	players.forEach( function (p) {
+		submission_string += buildSubmissionLine(p).replace(/\\/g, '');
+	});
+	
 	submission_string += '{{end}}';
 	$('#csv_textarea').val(submission_string.trim());
 }
@@ -201,7 +152,7 @@ function buildSubmissionLine(player) {
 	if (player.height) { str += ' |ft=' + player.height[0] + ' |in=' + player.height[1]; } else { str += ' |ft=  |in= '; }
 	if (player.weight) { str += ' |wt=' + player.weight; } else { str += ' |wt= '; }
 	
-	str += ' |birthyear=  |birthmonth=  |birthday= '; // deal with this later
+	if (player.birthday) { str += ' |birthyear=' + player.birthday[2] + ' |birthmonth=' + player.birthday[0] + ' |birthday=' + player.birthday[1]; } else { str += ' |birthyear=  |birthmonth=  |birthday= '; }
 	
 	if (player.hometown) { str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]'; } else { str += ' |state=  |hometown= '; }
 	
