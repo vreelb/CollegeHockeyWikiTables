@@ -12,10 +12,11 @@ header('Content-Type: text/html; charset=utf-8');
 <?php
 ini_set("auto_detect_line_endings", true);
 $chs_prefix = @$_GET["pull_url"] ?: '';
+$chn_prefix = @$_GET["chn_no"] ?: '';
 
 //////////////////// CHS Pulling
 if (@$_GET['pull_url']) {
-	if (date('n')>8) {	// guess which season baesd on current month
+	if (date('n')>8) {	// guess which season based on current month
 		$season = date('y') . (date('y')+1);
 	} else {
 		$season = (date('y')-1) . date('y');
@@ -32,6 +33,21 @@ if (@$_GET['pull_url']) {
 	$contents = stristr($contents, "<TABLE"); // get only table data from page
 	$contents = substr($contents, 0, (strrpos($contents, "</TABLE>")+8));
 
+	$chn_nums = [	// TODO: get all the CHS and CHN abbrs
+		"renm" => "48",
+	];
+	
+	$chn_stats =  fopen("http://www.collegehockeynews.com/reports/roster/xxxx/". $chn_nums[$chs_prefix], "r");
+	$contents_chn = stream_get_contents($chn_stats);
+	$contents_chn = addslashes($contents_chn);
+	$contents_chn = str_replace(chr(10), '', $contents_chn);  // fix newline issues, delimit with '~'
+	$contents_chn = str_replace(chr(13), '', $contents_chn);
+	$contents_chn = stristr($contents_chn, '<table'); // get only stats data from page
+	$contents_chn = substr($contents_chn, 6);
+	$contents_chn = stristr($contents_chn, '<table');
+	
+	$contents_chn = substr(trim($contents_chn), 0, (strrpos($contents_chn, '<h3 style=\"margin-bottom: 2px\">Recruits')));
+/*
 	$chs_stats = fopen("http://www.collegehockeystats.net/". $season ."/textstats/" . $chs_prefix, "r");
 	$contents_stats = stream_get_contents($chs_stats);
 	//$contents_stats = mb_convert_encoding($contents_stats, 'UTF-8', 'ASCII'); // not currently needed for textstats
@@ -41,20 +57,25 @@ if (@$_GET['pull_url']) {
 	$contents_stats = stristr($contents_stats, '<PRE CLASS=\"tiny\">'); // get only stats data from page
 	$contents_stats = substr(trim($contents_stats), 20, (strrpos($contents_stats, "</PRE>")-21));
 	$contents_stats = explode('~', $contents_stats);
-
+*/
 ?> 
 
 	<div id="other_page" style="display:none;"></div>
+	<div id="other_other_page" style=""></div>
 
 	<script>
 	$(document).ready( function() {
-		var content_stat = <?php echo(json_encode($contents_stats)); ?>;
-
 		var content_html = "<?= $contents ?>";
 		$("#other_page").html(content_html);
 		$("#other_page").html("<table>"+$("#other_page .rostable").first().html()+"</table>");
+		
+		var content_chn = "<?= $contents_chn ?>";
+		$("#other_other_page").html(content_chn);
+		$("#other_other_page").html("<table>"+$("#other_other_page table").first().html()+"</table>");
+		
 		//$("#parseTableHTML").hide();  // hide unneeded things
-		parse_table_HTML($('#other_page').html(), content_stat, "<?= $chs_url ?>");
+		parse_table_HTML($('#other_page').html(), $('#other_other_page').html(), "<?= $chs_url ?>");
+		
 	});
 	</script>
 
@@ -71,6 +92,7 @@ if (@$_GET['pull_url']) {
 <!--<button id="CHSbutton" onclick="parse_table_HTML($('#other_page').html());">Parse CHS</button>-->
 
 <div id="rosterTable" style="visibility: auto;"></div>
+<div id="CHNrosterTable" style="visibility: auto;"></div>
 
 <br/>
 <form>

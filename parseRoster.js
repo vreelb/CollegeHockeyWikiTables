@@ -56,6 +56,12 @@ function parse_CHS_for_player(stats, p) {
 	}
 }
 
+// http://www.collegehockeynews.com/reports/roster/xxxx/48
+// Pass in CHN Stat Table and player object
+function parse_CHN_for_player(stats, p) {  
+	console.log(stats);
+}
+
 // Pass in the table HTML, and the number of initial rows not containing data
 function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 	if (rowsToSkip === undefined) {
@@ -79,7 +85,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 	if (num_rows === 8) {
 		submission_string += ' |women=yes}}\n';
 	} else {
-		submission_string += '}}';
+		submission_string += '}}\n';
 	}
 	
 	var temp1 = '';
@@ -152,7 +158,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 		if (player.prevteam[1] === "USHS") { // clarify USHS by state
 			player.prevteam[1] += "-" + getAbbr(player.hometown[1]);
 		}
-		//parse_CHS_for_player(stats, player);
+		parse_CHN_for_player(stats, player);
 
 		submission_string += buildSubmissionLine(player).replace(/\\/g, '');
 		if (num_rows === 8) {
