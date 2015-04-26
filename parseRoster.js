@@ -3,9 +3,11 @@ function parse_CHN(stats, players) {
 	$('#other_other_page .stats-row0, #other_other_page .stats-row1').each(function() {
 		var player_num = $(this).children('td').first().text();
 		if (players[player_num]) {
+			
 			if ($(this).children('td:nth-child(2)').text().indexOf('(') >= 0) {
 				players[player_num].cap = $(this).children('td:nth-child(2)').text().split('(')[1][0];
 			}
+			
 			if ($(this).children('td:nth-child(6)').text() != '') {
 				players[player_num].birthday = $(this).children('td:nth-child(6)').text().split('/');
 				if (players[player_num].birthday[2] > 50) {
@@ -14,9 +16,21 @@ function parse_CHN(stats, players) {
 					players[player_num].birthday[2] = '20' + players[player_num].birthday[2];
 				}
 			}
+			
 			if ($(this).children('td:nth-child(9)').text() != '') {
 				players[player_num].draft = $(this).children('td:nth-child(9)').text().split('-');
+				if (players[player_num].draft[2] === '1') {
+					players[player_num].draft[2] += 'st';
+				} else if (players[player_num].draft[2] === '2') {
+					players[player_num].draft[2] += 'nd';
+				} else if (players[player_num].draft[2] === '3') {
+					players[player_num].draft[2] += 'rd';
+				} else {
+					players[player_num].draft[2] += 'th';
+				}
+				players[player_num].draft[1] = getNHLName(players[player_num].draft[1]);
 			}
+			
 		} else {
 			console.log("Player "+ player_num +" not found, probably a mismatch between CHS and CHN numbers.");
 		}
@@ -24,7 +38,7 @@ function parse_CHN(stats, players) {
 }
 
 // Pass in the table HTML, and the number of initial rows not containing data
-function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
+function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 	if (rowsToSkip === undefined) {
 		rowsToSkip = 1; // assume 1 header row
 	}
@@ -41,7 +55,11 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 	
 	var d = new Date();
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	var submission_string = '{{refbegin}}\nAs of '+ monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + '. [' + url + ']\n{{refend}}\n{{College ice hockey team roster';
+	var submission_string = '\nAs of '+ monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + '.<ref>' + chs_url + '</ref>';
+	if (chn_url) {
+		submission_string += '<ref>' + chn_url + '</ref>';
+	}
+	submission_string += '\n\n{{College ice hockey team roster';
 	if (num_rows === 8) {
 		submission_string += ' |women=yes}}\n';
 	} else {
@@ -116,7 +134,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 			}
 		});
 		if (player.prevteam[1] === "USHS") { // clarify USHS by state
-			player.prevteam[1] += "-" + getAbbr(player.hometown[1]);
+			player.prevteam[1] += "-" + getStateAbbr(player.hometown[1]);
 		}
 
 		if (num_rows === 8) {
@@ -127,7 +145,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 	});
 	
 	if (num_rows != 8) {
-		parse_CHN(stats, players);
+		parse_CHN(chn_data, players);
 	}
 	
 	players.forEach( function (p) {
@@ -147,7 +165,7 @@ function buildSubmissionLine(player) {
 	str += ' |first=' + player.first_name + ' |last=' + player.last_name;
 	str += ' |link= ';	// can be filled in manually if they have a wikipedia page
 	if (player.year) { str += ' |class=' + player.year; } else { str += ' |class= '; }
-	str += ' |rs= ';	// can be filled in manually if are redshirted
+	str += ' |rs= ';	// can be filled in manually if redshirted
 	if (player.position) { str += ' |pos=' + player.position; } else { str += ' |pos= '; }
 	if (player.height) { str += ' |ft=' + player.height[0] + ' |in=' + player.height[1]; } else { str += ' |ft=  |in= '; }
 	if (player.weight) { str += ' |wt=' + player.weight; } else { str += ' |wt= '; }
@@ -165,8 +183,10 @@ function buildSubmissionLine(player) {
 	// Note that "AtlJHL" must be used for the Atlantic Junior Hockey League.
 	// For US high schools, use e.g. "USHS-MN". For minor teams, use e.g. "Midget AAA".
 	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; } else { str += ' |prevteam=  |prevleague= '; }
-
-	str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear=  |inj= '; // deal with this later
+	
+	if (player.draft) { str += ' |NHLteam=' + player.draft[1] + ' |NHLround=' + player.draft[2] + ' |NHLpick=  |NHLyear=' + player.draft[0]; } else { str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear= '; }
+	
+	str += ' |inj= ';	// can be filled in manually if injured
 	
 	if (player.cap) { str += ' |cap=' + player.cap; } else { str += ' |cap= '; }
 	if (player.female) { str += ' |women=yes }}\n'; } else { str += '}}\n'; }

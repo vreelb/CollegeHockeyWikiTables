@@ -6,7 +6,7 @@ include('abbrev.php');
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="./parseRoster.js"></script>
-<script src="./state_province.js"></script>
+<script src="./abbrev.js"></script>
 
 <h1>Add Team Roster</h1>
 
@@ -37,7 +37,8 @@ if (@$_GET['pull_url']) {
 	
 	
 	if (@$chs_chn[$chs_prefix]) {
-		$chn_stats =  fopen("http://www.collegehockeynews.com/reports/roster/xxxx/". $chs_chn[$chs_prefix], "r");
+		$chn_url = "http://www.collegehockeynews.com/reports/roster/xxxx/". $chs_chn[$chs_prefix];
+		$chn_stats =  fopen($chn_url, "r");
 		$contents_chn = stream_get_contents($chn_stats);
 		$contents_chn = addslashes($contents_chn);
 		$contents_chn = str_replace(chr(10), '', $contents_chn);  // fix newline issues, delimit with '~'
@@ -70,7 +71,7 @@ if (@$_GET['pull_url']) {
 		}
 ?>
 		$("#parseTableHTML").hide();  // hide unneeded things
-		parse_table_HTML($('#other_page').html(), $('#other_other_page').html(), "<?= $chs_url ?>");
+		parse_table_HTML($('#other_page').html(), $('#other_other_page').html(), "<?= $chs_url ?>", "<?= @$chn_url ?>");
 		
 	});
 	</script>
