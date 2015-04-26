@@ -37,17 +37,19 @@ if (@$_GET['pull_url']) {
 		"renm" => "48",
 	];
 	
-	$chn_stats =  fopen("http://www.collegehockeynews.com/reports/roster/xxxx/". $chn_nums[$chs_prefix], "r");
-	$contents_chn = stream_get_contents($chn_stats);
-	$contents_chn = addslashes($contents_chn);
-	$contents_chn = str_replace(chr(10), '', $contents_chn);  // fix newline issues, delimit with '~'
-	$contents_chn = str_replace(chr(13), '', $contents_chn);
-	$contents_chn = stristr($contents_chn, '<table'); // get only stats data from page
-	$contents_chn = substr($contents_chn, 6);
-	$contents_chn = stristr($contents_chn, '<table');
-	$contents_chn = str_replace("&nbsp;", "", $contents_chn);
-	
-	$contents_chn = substr(trim($contents_chn), 0, (strrpos($contents_chn, '<h3 style=\"margin-bottom: 2px\">Recruits')));
+	if (@$chn_nums[$chs_prefix]) {
+		$chn_stats =  fopen("http://www.collegehockeynews.com/reports/roster/xxxx/". $chn_nums[$chs_prefix], "r");
+		$contents_chn = stream_get_contents($chn_stats);
+		$contents_chn = addslashes($contents_chn);
+		$contents_chn = str_replace(chr(10), '', $contents_chn);  // fix newline issues, delimit with '~'
+		$contents_chn = str_replace(chr(13), '', $contents_chn);
+		$contents_chn = stristr($contents_chn, '<table'); // get only stats data from page
+		$contents_chn = substr($contents_chn, 6);
+		$contents_chn = stristr($contents_chn, '<table');
+		$contents_chn = str_replace("&nbsp;", "", $contents_chn);
+		
+		$contents_chn = substr(trim($contents_chn), 0, (strrpos($contents_chn, '<h3 style=\"margin-bottom: 2px\">Recruits')));
+	}
 /*
 	$chs_stats = fopen("http://www.collegehockeystats.net/". $season ."/textstats/" . $chs_prefix, "r");
 	$contents_stats = stream_get_contents($chs_stats);
@@ -69,11 +71,16 @@ if (@$_GET['pull_url']) {
 		var content_html = "<?= $contents ?>";
 		$("#other_page").html(content_html);
 		$("#other_page").html("<table>"+$("#other_page .rostable").first().html()+"</table>");
-		
-		var content_chn = "<?= $contents_chn ?>";
-		$("#other_other_page").html(content_chn);
-		$("#other_other_page").html("<table>"+$("#other_other_page table").first().html()+"</table>");
-		
+
+<?php
+		if (@$chn_nums[$chs_prefix]) {
+?>
+			var content_chn = "<?= $contents_chn ?>";
+			$("#other_other_page").html(content_chn);
+			$("#other_other_page").html("<table>"+$("#other_other_page table").first().html()+"</table>");
+<?php
+		}
+?>
 		//$("#parseTableHTML").hide();  // hide unneeded things
 		parse_table_HTML($('#other_page').html(), $('#other_other_page').html(), "<?= $chs_url ?>");
 		

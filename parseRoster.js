@@ -172,17 +172,17 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 			player.prevteam[1] += "-" + getAbbr(player.hometown[1]);
 		}
 
-		submission_string += buildSubmissionLine(player).replace(/\\/g, '');
 		if (num_rows === 8) {
-			submission_string += ' |women=yes }}\n';
-		} else {
-			submission_string += '}}\n';
+			player.female = true;
 		}
+		submission_string += buildSubmissionLine(player).replace(/\\/g, '');
 		
 		players[player.number] = player;
 	});
 
-	parse_CHN(stats, players);
+	if (num_rows != 8) {
+		parse_CHN(stats, players);
+	}
 	submission_string += '{{end}}';
 	$('#csv_textarea').val(submission_string.trim());
 }
@@ -218,6 +218,12 @@ function buildSubmissionLine(player) {
 	str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear=  |inj=  |cap= '; // deal with this later
 	
 	//if (player.draft_pick) { str += player.draft_pick; }
+	
+	if (player.female) {
+		str += ' |women=yes }}\n';
+	} else {
+		str += '}}\n';
+	}
 
 	return str;
 }
