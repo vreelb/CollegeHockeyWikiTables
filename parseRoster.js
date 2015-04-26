@@ -56,10 +56,24 @@ function parse_CHS_for_player(stats, p) {
 	}
 }
 
-// http://www.collegehockeynews.com/reports/roster/xxxx/48
 // Pass in CHN Stat Table and player object
-function parse_CHN_for_player(stats, p) {  
-	console.log(stats);
+function parse_CHN(stats, players) {
+	$('#other_other_page .stats-row0, #other_other_page .stats-row1').each(function() {
+		var player_num = $(this).children('td').first().text();
+		if (players[player_num]) {
+			if ($(this).children('td:nth-child(2)').text().indexOf('(') >= 0) {
+				players[player_num].cap = $(this).children('td:nth-child(2)').text().split('(')[1][0];
+			}
+			if ($(this).children('td:nth-child(6)').text() != '') {
+				players[player_num].birthday = $(this).children('td:nth-child(6)').text().split('/');
+			}
+			if ($(this).children('td:nth-child(9)').text() != '') {
+				players[player_num].draft = $(this).children('td:nth-child(9)').text().split('-');
+			}
+		} else {
+			console.log("Player "+ player_num +" not found, might be a mismatch between CHS and CHN numbers.");
+		}
+	});
 }
 
 // Pass in the table HTML, and the number of initial rows not containing data
@@ -73,9 +87,8 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 
 	$('#rosterTable').html(table_HTML);
 	$('#rosterTable table').css('font-size', '8pt');
-	$('#tableEntry').hide();
-	$('#showTableEntry').show();
 
+	var players = [];
 	var num_players = 0;
 	var num_rows = $('#rosterTable tr').slice(rowsToSkip).first().find('td').length;
 	
@@ -92,7 +105,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 	var temp2 = '';
 
 	$('#rosterTable tr').slice(rowsToSkip).each(function() {
-		var player = new Object();
+		var player = {};
 		num_players++;
 
 		$(this).find('td').each(function(index) {
@@ -108,7 +121,7 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 
 					if (temp2[temp2.length-1].indexOf('(') >= 0) {  // get (DRAFT) out
 						temp1 = temp2.pop();
-						player.draft_pick = temp1.substr(1,3);
+						//player.draft_pick = temp1.substr(1,3);
 					}
 					
 					player.last_name = temp2.join(" ").trim();
@@ -158,7 +171,6 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 		if (player.prevteam[1] === "USHS") { // clarify USHS by state
 			player.prevteam[1] += "-" + getAbbr(player.hometown[1]);
 		}
-		parse_CHN_for_player(stats, player);
 
 		submission_string += buildSubmissionLine(player).replace(/\\/g, '');
 		if (num_rows === 8) {
@@ -166,8 +178,11 @@ function parse_table_HTML(table_HTML, stats, url, rowsToSkip) {
 		} else {
 			submission_string += '}}\n';
 		}
+		
+		players[player.number] = player;
 	});
 
+	parse_CHN(stats, players);
 	submission_string += '{{end}}';
 	$('#csv_textarea').val(submission_string.trim());
 }

@@ -45,6 +45,7 @@ if (@$_GET['pull_url']) {
 	$contents_chn = stristr($contents_chn, '<table'); // get only stats data from page
 	$contents_chn = substr($contents_chn, 6);
 	$contents_chn = stristr($contents_chn, '<table');
+	$contents_chn = str_replace("&nbsp;", "", $contents_chn);
 	
 	$contents_chn = substr(trim($contents_chn), 0, (strrpos($contents_chn, '<h3 style=\"margin-bottom: 2px\">Recruits')));
 /*
@@ -61,7 +62,7 @@ if (@$_GET['pull_url']) {
 ?> 
 
 	<div id="other_page" style="display:none;"></div>
-	<div id="other_other_page" style=""></div>
+	<div id="other_other_page" style="display:none;"></div>
 
 	<script>
 	$(document).ready( function() {
@@ -92,7 +93,7 @@ if (@$_GET['pull_url']) {
 <!--<button id="CHSbutton" onclick="parse_table_HTML($('#other_page').html());">Parse CHS</button>-->
 
 <div id="rosterTable" style="visibility: auto;"></div>
-<div id="CHNrosterTable" style="visibility: auto;"></div>
+<!--<div id="CHNrosterTable" style="visibility: auto;"></div>-->
 
 <br/>
 <form>
