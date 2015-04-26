@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
+include('abbrev.php');
 ?>
 <title>College Hockey Roster Wiki Table Maker</title>
 
@@ -33,12 +34,10 @@ if (@$_GET['pull_url']) {
 	$contents = stristr($contents, "<TABLE"); // get only table data from page
 	$contents = substr($contents, 0, (strrpos($contents, "</TABLE>")+8));
 
-	$chn_nums = [	// TODO: get all the CHS and CHN abbrs
-		"renm" => "48",
-	];
 	
-	if (@$chn_nums[$chs_prefix]) {
-		$chn_stats =  fopen("http://www.collegehockeynews.com/reports/roster/xxxx/". $chn_nums[$chs_prefix], "r");
+	
+	if (@$chs_chn[$chs_prefix]) {
+		$chn_stats =  fopen("http://www.collegehockeynews.com/reports/roster/xxxx/". $chs_chn[$chs_prefix], "r");
 		$contents_chn = stream_get_contents($chn_stats);
 		$contents_chn = addslashes($contents_chn);
 		$contents_chn = str_replace(chr(10), '', $contents_chn);  // fix newline issues, delimit with '~'
@@ -62,7 +61,7 @@ if (@$_GET['pull_url']) {
 		$("#other_page").html("<table>"+$("#other_page .rostable").first().html()+"</table>");
 
 <?php
-		if (@$chn_nums[$chs_prefix]) {
+		if (@$chs_chn[$chs_prefix]) {
 ?>
 			var content_chn = "<?= $contents_chn ?>";
 			$("#other_other_page").html(content_chn);

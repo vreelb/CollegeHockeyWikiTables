@@ -169,12 +169,7 @@ function buildSubmissionLine(player) {
 	str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear=  |inj= '; // deal with this later
 	
 	if (player.cap) { str += ' |cap=' + player.cap; } else { str += ' |cap= '; }
-	
-	if (player.female) {
-		str += ' |women=yes }}\n';
-	} else {
-		str += '}}\n';
-	}
+	if (player.female) { str += ' |women=yes }}\n'; } else { str += '}}\n'; }
 
 	return str;
 }
