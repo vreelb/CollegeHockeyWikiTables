@@ -18,7 +18,7 @@ function parse_CHN(stats, players) {
 				players[player_num].draft = $(this).children('td:nth-child(9)').text().split('-');
 			}
 		} else {
-			console.log("Player "+ player_num +" not found, might be a mismatch between CHS and CHN numbers.");
+			console.log("Player "+ player_num +" not found, probably a mismatch between CHS and CHN numbers.");
 		}
 	});
 }
@@ -166,9 +166,9 @@ function buildSubmissionLine(player) {
 	// For US high schools, use e.g. "USHS-MN". For minor teams, use e.g. "Midget AAA".
 	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; } else { str += ' |prevteam=  |prevleague= '; }
 
-	str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear=  |inj=  |cap= '; // deal with this later
+	str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear=  |inj= '; // deal with this later
 	
-	//if (player.draft_pick) { str += player.draft_pick; }
+	if (player.cap) { str += ' |cap=' + player.cap; } else { str += ' |cap= '; }
 	
 	if (player.female) {
 		str += ' |women=yes }}\n';
