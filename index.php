@@ -78,10 +78,17 @@ if (@$_GET['pull_url']) {
 <?php
 }
 ?>
-
 <form id="CHSabbr" action="index.php">
-	<label>Enter CollegeHockeyStats abbreviation: 
-		<input type="text" name="pull_url" size="10" maxlength="4" value="<?= $chs_prefix ?>"/>
+	<label>Select team to make table: 
+<?php
+	echo '<select name="pull_url">';
+	echo '<option value="">Team</option>';
+	foreach($team_chs as $team_name => $team_id) {
+		echo '<option value="' . $team_id . '">' . $team_name . '</option>';
+	}
+	echo'</select>';
+?>
+		<!--<input type="text" name="pull_url" size="10" maxlength="4" value="<?= $chs_prefix ?>"/>-->
 		<input type="submit" name="pull" onclick=""></button>
 	</label>
 </form>

@@ -123,7 +123,15 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 					temp1 = $(this).text().trim().split(' / ');
 					player.hometown = sanitizeHometown(temp1[0]);
 					player.prevteam = temp1[1].split(' (');
-					player.prevteam[1] = player.prevteam[1].split(')')[0];
+					if (player.prevteam[1]) {
+						player.prevteam[1] = player.prevteam[1].split(')')[0];
+					} else {
+						player.prevteam[1] = ' ';
+					}
+					if (player.prevteam[0].indexOf("N/A") >= 0) {
+						player.prevteam[0] = ' ';
+						player.prevteam[1] = ' ';
+					}
 					break;
 			}
 		});
