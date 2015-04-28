@@ -29,7 +29,7 @@ if (@$_GET['pull_url']) {
 	$contents = mb_convert_encoding($contents, 'UTF-8', 'ASCII');
 	$contents = str_replace("\xc2\x9a", "\xc5\xa1" , $contents); // replace incorrect "Single Character Introducer" with "Small Latin S with Caron"
 	$contents = addslashes($contents);
-	$contents = str_replace(chr(10), '', $contents);  // fix newline issues
+	$contents = str_replace(chr(10), '', $contents); // fix newline issues
 	$contents = str_replace(chr(13), '', $contents);
 	$contents = stristr($contents, "<TABLE"); // get only table data from page
 	$contents = substr($contents, 0, (strrpos($contents, "</TABLE>")+8));
@@ -41,7 +41,7 @@ if (@$_GET['pull_url']) {
 		$chn_stats =  fopen($chn_url, "r");
 		$contents_chn = stream_get_contents($chn_stats);
 		$contents_chn = addslashes($contents_chn);
-		$contents_chn = str_replace(chr(10), '', $contents_chn);  // fix newline issues, delimit with '~'
+		$contents_chn = str_replace(chr(10), '', $contents_chn); // fix newline issues, delimit with '~'
 		$contents_chn = str_replace(chr(13), '', $contents_chn);
 		$contents_chn = stristr($contents_chn, '<table'); // get only stats data from page
 		$contents_chn = substr($contents_chn, 6);
@@ -88,11 +88,11 @@ if (@$_GET['pull_url']) {
 	}
 	echo'</select>';
 ?>
-		<!--<input type="text" name="pull_url" size="10" maxlength="4" value="<?= $chs_prefix ?>"/>-->
 		<input type="submit" name="pull" onclick=""></button>
 	</label>
 </form>
 
+<h2 id="team"></h2>
 <div id="rosterTable" style="visibility: auto;"></div>
 
 <br/>

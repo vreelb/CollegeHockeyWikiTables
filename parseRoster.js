@@ -1,4 +1,4 @@
-// Pass in CHN Stat Table and player object
+// Pass in CHN Stat Table and players object
 function parse_CHN(stats, players) {
 	$('#other_other_page .stats-row0, #other_other_page .stats-row1').each(function() {
 		var player_num = $(this).children('td').first().text();
@@ -72,6 +72,10 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 	$('#rosterTable tr').slice(rowsToSkip).each(function() {
 		var player = {};
 		num_players++;
+		
+		if (num_rows === 8) {
+			player.female = true;
+		}
 
 		$(this).find('td').each(function(index) {
 			switch (index) {
@@ -95,23 +99,21 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 					break;
 				case 3: // parse position
 					player.position = $(this).text().trim();
-					if (player.position == "G") { player.stype = "hg"; }
 					break;
 				case 4: // parse height
 					player.height = $(this).text().trim().split('-');
 					break;
 				case 5: // parse weight (M)
-					if (num_rows == 9) {
+					if (!player.female) {
 						player.weight = $(this).text().trim();
 					} else { //handedness (W)
 						//player.hand = $(this).text().trim();
 					}
 					break;
 				case 6: // parse handedness (M), age (W)
-
 					break;
 				case 7: // parse age (M), hometown + etc. (W)
-					if (num_rows == 8) {
+					if (player.female) {
 						temp1 = $(this).text().trim().split(' / ');
 						player.hometown = sanitizeHometown(temp1[0]);
 						player.prevteam = [];
@@ -137,10 +139,6 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 		});
 		if (player.prevteam[1] === "USHS") { // clarify USHS by state
 			player.prevteam[1] += "-" + getStateAbbr(player.hometown[1]);
-		}
-
-		if (num_rows === 8) {
-			player.female = true;
 		}
 		
 		players[player.number] = player;

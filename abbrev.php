@@ -1,8 +1,8 @@
 <?php
 // All Teams that have info on CHS.
 $team_chs = [
-//// Men's Division I
-// Atlantic Hockey
+//// Men's Division I ////
+// Atlantic Hockey //
 	"Air Force" => "afam",
 	"American International (AIC)" => "aicm",
 	"Army" => "armm",
@@ -15,7 +15,7 @@ $team_chs = [
 	"Robert Morris" => "rmum",
 	"Sacred Heart" => "sacm",
 
-// Big Ten
+// Big Ten //
 	"Michigan" => "micm",
 	"Michigan State" => "msum",
 	"Minnesota" => "minm",
@@ -23,7 +23,7 @@ $team_chs = [
 	"Penn State" => "psum",
 	"Wisconsin" => "wism",
 
-// ECAC
+// ECAC Hockey //
 	"Brown" => "brnm",
 	"Clarkson" => "clkm",
 	"Colgate" => "clgm",
@@ -37,7 +37,7 @@ $team_chs = [
 	"Union" => "unim",
 	"Yale" => "yalm",
 
-// Hockey East
+// Hockey East //
 	"Boston College" => "bc_m",
 	"Boston University" => "bu_m",
 	"Connecticut" => "conm",
@@ -51,7 +51,7 @@ $team_chs = [
 	"Providence" => "prvm",
 	"Vermont" => "verm",
 
-// NCHC
+// NCHC //
 	"Colorado College" => "cc_m",
 	"Denver" => "denm",
 	"Miami" => "miam",
@@ -61,7 +61,7 @@ $team_chs = [
 	"St. Cloud State" => "stcm",
 	"Western Michigan" => "wmum",
 
-// WCHA
+// WCHA //
 	"Alabama Huntsville" => "alhm",
 	"Alaska Anchorage (UAA)" => "akam",
 	"Alaska" => "akfm",
@@ -73,8 +73,8 @@ $team_chs = [
 	"Minnesota State" => "mnsm",
 	"Northern Michigan" => "nmum",
 
-//// Women's Division I
-// College Hockey America (Women)
+//// Women's Division I ////
+// College Hockey America (Women) //
 	"Lindenwood" => "linw",
 	"Mercyhurst" => "mrcw",
 	"Penn State" => "psuw",
@@ -82,7 +82,7 @@ $team_chs = [
 	"Robert Morris" => "rmuw",
 	"Syracuse" => "syrw",
 
-// ECAC Hockey (Women)
+// ECAC Hockey (Women) //
 	"Brown" => "brnw",
 	"Clarkson" => "clkw",
 	"Colgate" => "clgw",
@@ -96,7 +96,7 @@ $team_chs = [
 	"Union" => "uniw",
 	"Yale" => "yalw",
 
-// Hockey East (Women)
+// Hockey East (Women //
 	"Boston College" => "bc_w",
 	"Boston University" => "bu_w",
 	"Connecticut" => "conw",
@@ -106,7 +106,7 @@ $team_chs = [
 	"Providence" => "prvw",
 	"Vermont" => "verw",
 
-// WCHA (Women)
+// WCHA (Women) //
 	"Bemidji State" => "bmjw",
 	"Minnesota" => "minw",
 	"Minnesota Duluth" => "mndw",
@@ -116,11 +116,11 @@ $team_chs = [
 	"St. Cloud State" => "stcw",
 	"Wisconsin" => "wisw",
 
-// Women's Division I Independent
+// Women's Division I Independent //
 	"Sacred Heart" => "sacw",
 
-//// Men's Division III
-// ECAC Men's East
+//// Men's Division III ////
+// ECAC Men's East //
 	"Babson" => "babm",
 	"Castleton" => "cstm",
 	"UMass Boston" => "umbm",
@@ -132,7 +132,7 @@ $team_chs = [
 	"Skidmore" => "skdm",
 	"Southern Maine" => "somm",
 
-// ECAC Northeast
+// ECAC Northeast //
 	"Becker" => "becm",
 	"Curry" => "curm",
 	"Johnson & Wales" => "j_wm",
@@ -142,7 +142,7 @@ $team_chs = [
 	"Wentworth" => "wenm",
 	"Western New England" => "wnem",
 
-// ECAC Men's West
+// ECAC Men's West //
 	"Elmira" => "elmm",
 	"Hobart" => "hobm",
 	"Manhattanville" => "manm",
@@ -150,7 +150,7 @@ $team_chs = [
 	"Neumann" => "neum",
 	"Utica" => "utcm",
 
-// MASCAC
+// MASCAC //
 	"Fitchburg State" => "fitm",
 	"Framingham State" => "fram",
 	"UMass Dartmouth" => "umdm",
@@ -159,7 +159,7 @@ $team_chs = [
 	"Westfield State" => "wfsm",
 	"Worcester State" => "worm",
 
-// MIAC Men
+// MIAC Men //
 	"Augsburg" => "augm",
 	"Bethel" => "betm",
 	"Concordia (MN)" => "cncm",
@@ -170,7 +170,7 @@ $team_chs = [
 	"St. Olaf" => "stom",
 	"St. Thomas" => "sttm",
 
-// NCHA Men
+// NCHA Men //
 	"Adrian" => "adrm",
 	"Aurora" => "aurm",
 	"Concordia (WI)" => "cnwm",
@@ -183,7 +183,7 @@ $team_chs = [
 	"St. Norbert" => "snbm",
 	"St. Scholastica" => "stsm",
 
-// NESCAC Men
+// NESCAC Men //
 	"Amherst" => "amhm",
 	"Bowdoin" => "bowm",
 	"Colby" => "clbm",
@@ -195,7 +195,7 @@ $team_chs = [
 	"Wesleyan" => "wesm",
 	"Williams" => "wilm",
 
-// SUNYAC
+// SUNYAC //
 	"Brockport" => "brcm",
 	"Buffalo State" => "bfsm",
 	"Cortland" => "crtm",
@@ -206,14 +206,14 @@ $team_chs = [
 	"Plattsburgh" => "pltm",
 	"Potsdam" => "potm",
 
-// WIAC Men
+// WIAC Men //
 	"Wisconsin-Eau Claire" => "wecm",
 	"Wisconsin-River Falls" => "wrfm",
 	"Wisconsin-Stevens Point" => "wspm",
 	"Wisconsin-Stout" => "wstm",
 	"Wisconsin-Superior" => "wsrm",
 
-// Northeast-10
+// Northeast-10 //
 	"Assumption" => "ampm",
 	"Franklin Pierce" => "fpum",
 	"Saint Anselm" => "stam",
@@ -221,12 +221,12 @@ $team_chs = [
 	"Southern New Hampshire" => "snhm",
 	"Stonehill" => "stnm",
 
-// Men's Division III Independents
+// Men's Division III Independents //
 	"Aurora" => "aurm",
 	"Canton" => "cntm",
 
-//// Women's Division III
-// ECAC Women's East
+//// Women's Division III ////
+// ECAC Women's East //
 	"Castleton" => "cstw",
 	"Franklin Pierce" => "fpuw",
 	"Holy Cross" => "hcrw",
@@ -242,7 +242,7 @@ $team_chs = [
 	"Salve Regina" => "slvw",
 	"Southern Maine" => "somw",
 
-// ECAC Women's West
+// ECAC Women's West //
 	"Buffalo State" => "bfsw",
 	"Chatham" => "chtw",
 	"Cortland" => "crtw",
@@ -254,7 +254,7 @@ $team_chs = [
 	"Utica" => "utcw",
 	"William Smith" => "wmsw",
 
-// MIAC (Women)
+// MIAC (Women) //
 	"Augsburg" => "augw",
 	"Bethel" => "betw",
 	"Concordia (MN)" => "cncw",
@@ -266,7 +266,7 @@ $team_chs = [
 	"St. Olaf" => "stow",
 	"St. Thomas" => "sttw",
 
-// NCHA (Women)
+// NCHA (Women) //
 	"Adrian" => "adrw",
 	"Concordia (WI)" => "cnww",
 	"Finlandia" => "fnlw",
@@ -275,7 +275,7 @@ $team_chs = [
 	"St. Norbert" => "snbw",
 	"St. Scholastica" => "stsw",
 
-// NESCAC (Women)
+// NESCAC (Women) //
 	"Amherst" => "amhw",
 	"Bowdoin" => "boww",
 	"Colby" => "clbw",
@@ -286,13 +286,13 @@ $team_chs = [
 	"Wesleyan" => "wesw",
 	"Williams" => "wilw",
 
-// WIAC (Women)
+// WIAC (Women) //
 	"Wisconsin-Eau Claire" => "wecw",
 	"Wisconsin-River Falls" => "wrfw",
 	"Wisconsin-Stevens Point" => "wspw",
 	"Wisconsin-Superior" => "wsrw",
 
-// Women's Division III Independents
+// Women's Division III Independents //
 	"Canton" => "cntw",
 	"Stevenson" => "stvw",
 ];
