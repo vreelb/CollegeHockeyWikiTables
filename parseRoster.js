@@ -101,7 +101,9 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 					player.position = $(this).text().trim();
 					break;
 				case 4: // parse height
-					player.height = $(this).text().trim().split('-');
+					if ($(this).text().trim()) {
+						player.height = $(this).text().trim().split('-');
+					}
 					break;
 				case 5: // parse weight (M)
 					if (!player.female) {
