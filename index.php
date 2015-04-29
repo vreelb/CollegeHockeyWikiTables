@@ -8,7 +8,7 @@ include('abbrev.php');
 <script src="./parseRoster.js"></script>
 <script src="./abbrev.js"></script>
 
-<h1>Add Team Roster</h1>
+<h1>College Hockey Roster Wiki Table Maker</h1>
 
 <?php
 ini_set("auto_detect_line_endings", true);

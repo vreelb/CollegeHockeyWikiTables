@@ -67,7 +67,6 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 	}
 	
 	var temp1 = '';
-	var temp2 = '';
 
 	$('#rosterTable tr').slice(rowsToSkip).each(function() {
 		var player = {};
@@ -77,70 +76,46 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 			player.female = true;
 		}
 
-		$(this).find('td').each(function(index) {
-			switch (index) {
-				case 0: // parse number
-					player.number = $(this).text().trim().replace(/\#/g, '');
-					break;
-				case 1: // parse FIRST and LAST name and DRAFT
-					temp1 = $(this).text().trim().replace("\'", "\\\'");
-
-					temp2 = temp1.split('|');
-					player.first_name = temp2.shift();  // get FIRST name(s)
-
-					if (temp2[temp2.length-1].indexOf('(') >= 0) {  // get (DRAFT) out
-						temp1 = temp2.pop();
-					}
-					
-					player.last_name = temp2.join(" ").trim();
-					break;
-				case 2: // parse year
-					player.year = $(this).text().slice(0, 2).toLowerCase();
-					break;
-				case 3: // parse position
-					player.position = $(this).text().trim();
-					break;
-				case 4: // parse height
-					if ($(this).text().trim()) {
-						player.height = $(this).text().trim().split('-');
-					}
-					break;
-				case 5: // parse weight (M)
-					if (!player.female) {
-						player.weight = $(this).text().trim();
-					} else { //handedness (W)
-						//player.hand = $(this).text().trim();
-					}
-					break;
-				case 6: // parse handedness (M), age (W)
-					break;
-				case 7: // parse age (M), hometown + etc. (W)
-					if (player.female) {
-						temp1 = $(this).text().trim().split(' / ');
-						player.hometown = sanitizeHometown(temp1[0]);
-						player.prevteam = [];
-						player.prevteam[0] = temp1[1].split('|')[0].trim();
-						player.prevteam[1] = ' ';
-					}
-					break;
-				case 8: // parse hometown and prev team (M)
-					temp1 = $(this).text().trim().split(' / ');
-					player.hometown = sanitizeHometown(temp1[0]);
-					player.prevteam = temp1[1].split(' |')[0].split(' (');
-					if (player.prevteam[1]) {
-						player.prevteam[1] = player.prevteam[1].split(')')[0];
-					} else {
-						player.prevteam[1] = ' ';
-					}
-					if (player.prevteam[0].indexOf("N/A") >= 0) {
-						player.prevteam[0] = ' ';
-						player.prevteam[1] = ' ';
-					}
-					break;
+		player.number = $(this).children('td:nth-child(1)').text().trim().replace(/\#/g, '');
+		
+		temp1 = $(this).children('td:nth-child(2)').text().trim().split('|');
+		player.first_name = temp1.shift();  // get FIRST name(s)
+		if (temp1[temp1.length-1].indexOf('(') >= 0) { // get (DRAFT) out
+			temp1.pop();
+		}
+		player.last_name = temp1.join(" ").trim();
+		
+		player.year = $(this).children('td:nth-child(3)').text().slice(0, 2).toLowerCase();
+		player.position = $(this).children('td:nth-child(4)').text().slice(0, 2).toLowerCase();
+		
+		if ($(this).children('td:nth-child(5)').text().trim()) {
+			player.height = $(this).children('td:nth-child(5)').text().trim().split('-');
+		}
+		// set info index based on gender (W skips weight column)
+		var i = 6;
+		if (!player.female) { // parse weight (M)
+			player.weight = $(this).children('td:nth-child('+i+')').text().trim();
+			i = 7;
+		}
+		// parse handedness at some point?
+		i++;
+		// parse age at some point?
+		i++;
+		// parse hometown and prev team
+		temp1 = $(this).children('td:nth-child('+i+')').text().trim().split(' / ');
+		player.hometown = sanitizeHometown(temp1[0]);
+		player.prevteam = temp1[1].split(' |')[0].split(' (');
+		if (player.prevteam[1]) {
+			player.prevteam[1] = player.prevteam[1].split(')')[0];
+			if (player.prevteam[1] === "USHS") { // clarify USHS by state
+				player.prevteam[1] += "-" + getStateAbbr(player.hometown[1]);
 			}
-		});
-		if (player.prevteam[1] === "USHS") { // clarify USHS by state
-			player.prevteam[1] += "-" + getStateAbbr(player.hometown[1]);
+		} else {
+			player.prevteam[1] = ' ';
+		}
+		if (player.prevteam[0].indexOf("N/A") >= 0) {
+			player.prevteam[0] = ' ';
+			player.prevteam[1] = ' ';
 		}
 		
 		players[player.number] = player;
@@ -194,8 +169,6 @@ function buildSubmissionLine(player) {
 }
 
 function sanitizeHometown(place) {
-	place = place.replace("\'", "\\\'");
-
 	if (place.indexOf(",")<0) { return place; }
 
 	var temp = place.split(",");
