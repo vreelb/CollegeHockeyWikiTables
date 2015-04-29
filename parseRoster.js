@@ -117,7 +117,7 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 						temp1 = $(this).text().trim().split(' / ');
 						player.hometown = sanitizeHometown(temp1[0]);
 						player.prevteam = [];
-						player.prevteam[0] = temp1[1].trim();
+						player.prevteam[0] = temp1[1].split('|')[0].trim();
 						player.prevteam[1] = ' ';
 					}
 					break;
@@ -174,14 +174,11 @@ function buildSubmissionLine(player) {
 	
 	if (player.hometown) { str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]'; } else { str += ' |state=  |hometown= '; }
 	
-	// These (prevteam, prevleague) might be tricky:
+	// These might be tricky:
 	// player's previous team, compactly wikilinked (if page exists) without nickname or full school name
 	// (e.g. "[[Brainerd High School (Minnesota)|Brainerd]]", "[[Nanaimo Clippers|Nanaimo]]",
 	// "[[Northern Michigan Wildcats men's ice hockey|Northern Michigan]]", "Linköpings J-20")
 	
-	// league (acronym) of player's previous team, not wikilinked (e.g. "USHL", "BCHL", "CCHA", "J20 SuperElit").
-	// Note that "AtlJHL" must be used for the Atlantic Junior Hockey League.
-	// For US high schools, use e.g. "USHS-MN". For minor teams, use e.g. "Midget AAA".
 	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; } else { str += ' |prevteam=  |prevleague= '; }
 	
 	if (player.draft) { str += ' |NHLteam=' + player.draft[1] + ' |NHLround=' + player.draft[2] + ' |NHLpick=  |NHLyear=' + player.draft[0]; } else { str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear= '; }
