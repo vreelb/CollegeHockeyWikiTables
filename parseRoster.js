@@ -137,33 +137,22 @@ function buildSubmissionLine(player) {
 	// {{CIHplayer |num= |first= |last= |link= |class= |rs= |pos= |ft= |in= |wt= |birthyear= |birthmonth= |birthday= |state= |hometown= |prevteam= |prevleague= |NHLteam= |NHLround= |NHLpick= |NHLyear= |inj= |cap= |women=}}
 	
 	var str = '{{CIHplayer';
-
-	if (player.number) { str += ' |num=' + player.number; } else { str += ' |num= '; }
+	str += ' |num=' + player.number;
 	str += ' |first=' + player.first_name + ' |last=' + player.last_name;
-	str += ' |link= ';	// can be filled in manually if they have a wikipedia page
-	if (player.year) { str += ' |class=' + player.year; } else { str += ' |class= '; }
-	str += ' |rs= ';	// can be filled in manually if redshirted
-	if (player.position) { str += ' |pos=' + player.position; } else { str += ' |pos= '; }
-	if (player.height) { str += ' |ft=' + player.height[0] + ' |in=' + player.height[1]; } else { str += ' |ft=  |in= '; }
-	if (player.weight) { str += ' |wt=' + player.weight; } else { str += ' |wt= '; }
-	
-	if (player.birthday) { str += ' |birthyear=' + player.birthday[2] + ' |birthmonth=' + player.birthday[0] + ' |birthday=' + player.birthday[1]; } else { str += ' |birthyear=  |birthmonth=  |birthday= '; }
-	
-	if (player.hometown) { str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]'; } else { str += ' |state=  |hometown= '; }
-	
-	// These might be tricky:
-	// player's previous team, compactly wikilinked (if page exists) without nickname or full school name
-	// (e.g. "[[Brainerd High School (Minnesota)|Brainerd]]", "[[Nanaimo Clippers|Nanaimo]]",
-	// "[[Northern Michigan Wildcats men's ice hockey|Northern Michigan]]", "Linköpings J-20")
-	
-	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; } else { str += ' |prevteam=  |prevleague= '; }
-	
-	if (player.draft) { str += ' |NHLteam=' + player.draft[1] + ' |NHLround=' + player.draft[2] + ' |NHLpick=  |NHLyear=' + player.draft[0]; } else { str += ' |NHLteam=  |NHLround=  |NHLpick=  |NHLyear= '; }
-	
-	str += ' |inj= ';	// can be filled in manually if injured
-	
-	if (player.cap) { str += ' |cap=' + player.cap; } else { str += ' |cap= '; }
-	if (player.female) { str += ' |women=yes }}\n'; } else { str += '}}\n'; }
+	str += ' |link=';	// can be filled in manually if they have a wikipedia page
+	if (player.year) { str += ' |class=' + player.year; }
+	str += ' |rs=';	// can be filled in manually if redshirted
+	if (player.position) { str += ' |pos=' + player.position; }
+	if (player.height) { str += ' |ft=' + player.height[0] + ' |in=' + player.height[1]; }
+	if (player.weight) { str += ' |wt=' + player.weight; }
+	if (player.birthday) { str += ' |birthyear=' + player.birthday[2] + ' |birthmonth=' + player.birthday[0] + ' |birthday=' + player.birthday[1]; } else { str += ' |birthmonth= |birthday='; }
+	if (player.hometown) { str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]'; } else { str += ' |hometown='; }
+	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; }
+	if (player.draft) { str += ' |NHLteam=' + player.draft[1] + ' |NHLround=' + player.draft[2] + ' |NHLpick=  |NHLyear=' + player.draft[0]; }
+	str += ' |inj=';	// can be filled in manually if injured
+	if (player.cap) { str += ' |cap=' + player.cap; }
+	if (player.female) { str += ' |women=yes'; }
+	str += '}}\n';
 
 	return str;
 }
