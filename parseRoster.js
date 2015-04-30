@@ -169,9 +169,7 @@ function sanitizeHometown(place) {
 
 function removeEmpty() {
 	var content_str = $('#csv_textarea').val();
-	
-	content_str = content_str.replace(/ \|link= | \|rs= | \|NHLpick= | \|NHLround= | \|inj= /gi, ' ');
-	content_str = content_str.replace(/ }}/g, '}}');
-
+	content_str = content_str.replace(/\|[a-zA-Z]+=[ ]+/gi, '');
+	content_str = content_str.replace(/[ ]+}}/g, '}}');
 	$('#csv_textarea').val(content_str);
 }
