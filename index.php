@@ -97,6 +97,7 @@ if (@$_GET['pull_url']) {
 
 <br/>
 <form>
+	<button type="button" onclick="removeEmpty();">Remove empty parameters.</button><br>
 	<textarea id="csv_textarea" name="csv" rows="30" cols="100"></textarea>
 </form>
 

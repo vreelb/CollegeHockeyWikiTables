@@ -145,14 +145,14 @@ function buildSubmissionLine(player) {
 	if (player.position) { str += ' |pos=' + player.position; }
 	if (player.height) { str += ' |ft=' + player.height[0] + ' |in=' + player.height[1]; }
 	if (player.weight) { str += ' |wt=' + player.weight; }
-	if (player.birthday) { str += ' |birthyear=' + player.birthday[2] + ' |birthmonth=' + player.birthday[0] + ' |birthday=' + player.birthday[1]; } else { str += ' |birthmonth= |birthday='; }
-	if (player.hometown) { str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]'; } else { str += ' |hometown='; }
+	if (player.birthday) { str += ' |birthyear=' + player.birthday[2] + ' |birthmonth=' + player.birthday[0] + ' |birthday=' + player.birthday[1]; }
+	if (player.hometown) { str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]'; }
 	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; }
-	if (player.draft) { str += ' |NHLteam=' + player.draft[1] + ' |NHLround=' + player.draft[2] + ' |NHLpick=  |NHLyear=' + player.draft[0]; }
+	if (player.draft) { str += ' |NHLteam=' + player.draft[1] + ' |NHLround=' + player.draft[2] + ' |NHLpick= |NHLyear=' + player.draft[0]; }
 	str += ' |inj=';	// can be filled in manually if injured
 	if (player.cap) { str += ' |cap=' + player.cap; }
 	if (player.female) { str += ' |women=yes'; }
-	str += '}}\n';
+	str += ' }}\n';
 
 	return str;
 }
@@ -165,4 +165,13 @@ function sanitizeHometown(place) {
 	var city = temp.join().trim();
 
 	return [city, state];
+}
+
+function removeEmpty() {
+	var content_str = $('#csv_textarea').val();
+	
+	content_str = content_str.replace(/ \|link= | \|rs= | \|NHLpick= | \|NHLround= | \|inj= /gi, ' ');
+	content_str = content_str.replace(/ }}/g, '}}');
+
+	$('#csv_textarea').val(content_str);
 }
