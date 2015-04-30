@@ -134,23 +134,44 @@ function parse_table_HTML(table_HTML, chn_data, chs_url, chn_url, rowsToSkip) {
 }
 
 function buildSubmissionLine(player) {
-	// {{CIHplayer |num= |first= |last= |link= |class= |rs= |pos= |ft= |in= |wt= |birthyear= |birthmonth= |birthday= |state= |hometown= |prevteam= |prevleague= |NHLteam= |NHLround= |NHLpick= |NHLyear= |inj= |cap= |women=}}
+	// Submission line includes all parameters to make manually editing them easier.
+	// {{CIHplayer |num= |first= |last= |link= |class= |rs= |pos= |ft= |in= |wt= |birthyear= |birthmonth= |birthday= |state= |hometown= |prevteam= |prevleague= |NHLteam= |NHLround= |NHLpick= |NHLyear= |inj= |cap= |women= }}
 	
 	var str = '{{CIHplayer';
 	str += ' |num=' + player.number;
 	str += ' |first=' + player.first_name + ' |last=' + player.last_name;
-	str += ' |link=';	// can be filled in manually if they have a wikipedia page
-	if (player.year) { str += ' |class=' + player.year; }
-	str += ' |rs=';	// can be filled in manually if redshirted
-	if (player.position) { str += ' |pos=' + player.position; }
-	if (player.height) { str += ' |ft=' + player.height[0] + ' |in=' + player.height[1]; }
-	if (player.weight) { str += ' |wt=' + player.weight; }
-	if (player.birthday) { str += ' |birthyear=' + player.birthday[2] + ' |birthmonth=' + player.birthday[0] + ' |birthday=' + player.birthday[1]; }
-	if (player.hometown) { str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]'; }
-	if (player.prevteam) { str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1]; }
-	if (player.draft) { str += ' |NHLteam=' + player.draft[1] + ' |NHLround=' + player.draft[2] + ' |NHLpick= |NHLyear=' + player.draft[0]; }
-	str += ' |inj=';	// can be filled in manually if injured
-	if (player.cap) { str += ' |cap=' + player.cap; }
+	str += ' |link= |class=';	// link can be filled in manually if they have a wikipedia page
+	if (player.year) { str += player.year; }
+	str += ' |rs= |pos=';	// rs can be filled in manually if redshirted
+	if (player.position) { str += player.position; }
+	str += ' |ft=';
+	if (player.height[0]) { str += player.height[0]; }
+	str += ' |in=';
+	if (player.height[1]) { str += player.height[1]; }
+	str += ' |wt=';
+	if (player.weight) { str += player.weight; }
+	if (player.birthday) {
+		str += ' |birthyear=' + player.birthday[2] + ' |birthmonth=' + player.birthday[0] + ' |birthday=' + player.birthday[1];
+	} else {
+		str += ' |birthyear= |birthmonth= |birthday=';
+	}
+	if (player.hometown) {
+		str += ' |state=' + player.hometown[1] + ' |hometown=[[' + player.hometown[0] + ', ' + player.hometown[1] + ']]';
+	} else {
+		str += ' |state= |hometown=';
+	}
+	if (player.prevteam) {
+		str += ' |prevteam=' + player.prevteam[0] + ' |prevleague=' + player.prevteam[1];
+	} else {
+		str += ' |prevteam= |prevleague=';
+	}
+	if (player.draft) {
+		str += ' |NHLteam=' + player.draft[1] + ' |NHLround=' + player.draft[2] + ' |NHLpick= |NHLyear=' + player.draft[0];
+	} else {
+		str += ' |NHLteam= |NHLround= |NHLpick= |NHLyear=';
+	}
+	str += ' |inj= |cap=';	// inj can be filled in manually if injured
+	if (player.cap) { str += player.cap; }
 	if (player.female) { str += ' |women=yes'; }
 	str += ' }}\n';
 
