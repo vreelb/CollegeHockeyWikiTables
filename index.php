@@ -102,7 +102,9 @@ if (@$_GET['team']) {
 
 <br/>
 <form>
-	<button type="button" onclick="removeEmpty();">Remove empty parameters.</button><br>
+	<button type="button" onclick="removeEmpty();">Remove Empty Parameters</button>
+	<button type="button" onclick="$('#csv_textarea').select().focus();">Select All Text</button>
+	<br>
 	<textarea id="csv_textarea" name="csv" rows="30" cols="100"></textarea>
 </form>
 
