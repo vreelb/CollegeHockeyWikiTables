@@ -12,11 +12,11 @@ include('abbrev.php');
 
 <?php
 ini_set("auto_detect_line_endings", true);
-$chs_prefix = @$_GET["pull_url"] ?: '';
-$chn_prefix = @$_GET["chn_no"] ?: '';
+$chs_prefix = @$team_chs[$_GET["team"]] ?: '';
+$chn_prefix = @$chs_chn[$chs_prefix] ?: '';
 
 //////////////////// CHS Pulling
-if (@$_GET['pull_url']) {
+if (@$_GET['team']) {
 	if (date('n')>8) {	// guess which season based on current month
 		$season = date('y') . (date('y')+1);
 	} else {
@@ -36,8 +36,8 @@ if (@$_GET['pull_url']) {
 
 	
 	
-	if (@$chs_chn[$chs_prefix]) {
-		$chn_url = "http://www.collegehockeynews.com/reports/roster/xxxx/". $chs_chn[$chs_prefix];
+	if (@$chn_prefix) {
+		$chn_url = "http://www.collegehockeynews.com/reports/roster/xxxx/". $chn_prefix;
 		$chn_stats =  fopen($chn_url, "r");
 		$contents_chn = stream_get_contents($chn_stats);
 		$contents_chn = addslashes($contents_chn);
@@ -62,7 +62,7 @@ if (@$_GET['pull_url']) {
 		$("#other_page").html("<table>"+$("#other_page .rostable").first().html()+"</table>");
 
 <?php
-		if (@$chs_chn[$chs_prefix]) {
+		if (@$chn_prefix) {
 ?>
 			var content_chn = "<?= $contents_chn ?>";
 			$("#other_other_page").html(content_chn);
@@ -70,7 +70,6 @@ if (@$_GET['pull_url']) {
 <?php
 		}
 ?>
-		$("#parseTableHTML").hide();  // hide unneeded things
 		parse_table_HTML($('#other_page').html(), $('#other_other_page').html(), "<?= $chs_url ?>", "<?= @$chn_url ?>");
 		
 	});
@@ -81,10 +80,10 @@ if (@$_GET['pull_url']) {
 <form id="CHSabbr" action="index.php">
 	<label>Select team to make table: 
 <?php
-	echo '<select name="pull_url">';
+	echo '<select name="team">';
 	echo '<option value="">Team</option>';
 	foreach($team_chs as $team_name => $team_id) {
-		echo '<option value="' . $team_id . '">' . $team_name . '</option>';
+		echo '<option value="' . $team_name . '">' . $team_name . '</option>';
 	}
 	echo'</select>';
 ?>
@@ -92,7 +91,13 @@ if (@$_GET['pull_url']) {
 	</label>
 </form>
 
-<h2 id="team"></h2>
+<?php
+if (@$_GET['team']) {
+?>
+<h2 id="team">Roster table generated for: <?= @$_GET['team'] ?></h2>
+<?php
+}
+?>
 <div id="rosterTable" style="visibility: auto;"></div>
 
 <br/>

@@ -145,9 +145,9 @@ function buildSubmissionLine(player) {
 	str += ' |rs= |pos=';	// rs can be filled in manually if redshirted
 	if (player.position) { str += player.position; }
 	str += ' |ft=';
-	if (player.height[0]) { str += player.height[0]; }
+	if (player.height) { str += player.height[0]; }
 	str += ' |in=';
-	if (player.height[1]) { str += player.height[1]; }
+	if (player.height) { str += player.height[1]; }
 	str += ' |wt=';
 	if (player.weight) { str += player.weight; }
 	if (player.birthday) {
