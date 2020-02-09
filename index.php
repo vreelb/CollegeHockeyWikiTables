@@ -4,7 +4,7 @@ include('abbrev.php');
 ?>
 <title>College Hockey Roster Wiki Table Maker</title>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="./parseRoster.js"></script>
 <script src="./abbrev.js"></script>
 
@@ -34,10 +34,8 @@ if (@$_GET['team']) {
 	$contents = stristr($contents, "<TABLE"); // get only table data from page
 	$contents = substr($contents, 0, (strrpos($contents, "</TABLE>")+8));
 
-	
-	
 	if (@$chn_prefix) {
-		$chn_url = "http://www.collegehockeynews.com/reports/roster/xxxx/". $chn_prefix;
+		$chn_url = "https://www.collegehockeynews.com/reports/roster/xxxx/". $chn_prefix;
 		$chn_stats =  fopen($chn_url, "r");
 		$contents_chn = stream_get_contents($chn_stats);
 		$contents_chn = addslashes($contents_chn);
@@ -47,10 +45,10 @@ if (@$_GET['team']) {
 		$contents_chn = substr($contents_chn, 6);
 		$contents_chn = stristr($contents_chn, '<table');
 		$contents_chn = str_replace("&nbsp;", "", $contents_chn);
-		
+
 		$contents_chn = substr(trim($contents_chn), 0, (strrpos($contents_chn, '<h3 style=\"margin-bottom: 2px\">Recruits')));
 	}
-?> 
+?>
 
 	<div id="other_page" style="display:none;"></div>
 	<div id="other_other_page" style="display:none;"></div>
@@ -71,14 +69,14 @@ if (@$_GET['team']) {
 		}
 ?>
 		parse_table_HTML($('#other_page').html(), $('#other_other_page').html(), "<?= $chs_url ?>", "<?= @$chn_url ?>");
-		
+
 	});
 	</script>
 <?php
 }
 ?>
 <form id="CHSabbr" action="index.php">
-	<label>Select team to make table: 
+	<label>Select team to make table:
 <?php
 	echo '<select name="team">';
 	echo '<option value="">Team</option>';
